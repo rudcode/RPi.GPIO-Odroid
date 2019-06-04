@@ -70,7 +70,7 @@ int epfd_blocking = -1;
 int gpio_export(unsigned int gpio)
 {
     int fd, len;
-    char str_gpio[3];
+    char str_gpio[8];
 
   if ( odroid_found ) {
     if ((fd = open("/sys/class/aml_gpio/export", O_WRONLY)) < 0)
@@ -90,7 +90,7 @@ int gpio_export(unsigned int gpio)
 int gpio_unexport(unsigned int gpio)
 {
     int fd, len;
-    char str_gpio[3];
+    char str_gpio[8];
 
   if ( odroid_found ) {
     if ((fd = open("/sys/class/aml_gpio/unexport", O_WRONLY)) < 0)
@@ -112,7 +112,7 @@ int gpio_set_direction(unsigned int gpio, unsigned int in_flag)
     int retry;
     struct timespec delay;
     int fd;
-    char filename[33];
+    char filename[128];
 
   if ( odroid_found )
     snprintf(filename, sizeof(filename), "/sys/class/aml_gpio/gpio%d/direction", gpio);
@@ -142,7 +142,7 @@ int gpio_set_direction(unsigned int gpio, unsigned int in_flag)
 int gpio_set_edge(unsigned int gpio, unsigned int edge)
 {
     int fd;
-    char filename[28];
+    char filename[128];
 
   if ( odroid_found )
     snprintf(filename, sizeof(filename), "/sys/class/aml_gpio/gpio%d/edge", gpio);
@@ -160,7 +160,7 @@ int gpio_set_edge(unsigned int gpio, unsigned int edge)
 int open_value_file(unsigned int gpio)
 {
     int fd;
-    char filename[29];
+    char filename[128];
 
     // create file descriptor of value file
   if ( odroid_found )
