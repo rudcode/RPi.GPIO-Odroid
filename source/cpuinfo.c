@@ -50,7 +50,9 @@ int get_rpi_info(rpi_info *info)
          odroid_found = 0;
       }
       else {  //Check for Odroid
-        if (strstr(hardware, "ODROID")) {
+         if (strstr(hardware, "Hardkernel"))
+            sscanf(buffer, "Hardware	: Hardkernel %s", hardware);
+         if (strstr(hardware, "ODROID")) {
             odroid_found = found = 1;
             setInfoOdroid(hardware, (void *)info);
         }

@@ -40,6 +40,7 @@
 #define	PI_MODEL_ODROIDC  6
 #define PI_MODEL_ODROIDXU_34    7
 #define	PI_MODEL_ODROIDC2	8
+#define	PI_MODEL_ODROIDN2 9
 
 // Failure modes
 
@@ -165,6 +166,31 @@ static int adcFds [2] = {
 #define GPIO_B3_PUD_OFFSET  0x00C8
 #define GPIO_B3_END         214
 
+//
+// For ODROID-N2 Board
+//
+#define N2_GPIO_MASK			(0xFFFFFF00)
+#define N2_GPIO_BASE			0xff634000
+
+#define N2_GPIO_PIN_BASE		410
+
+#define N2_GPIOA_PIN_START		(N2_GPIO_PIN_BASE + 50) // GPIOA_0
+#define N2_GPIOA_PIN_END		(N2_GPIO_PIN_BASE + 65) // GPIOA_15
+#define N2_GPIOX_PIN_START		(N2_GPIO_PIN_BASE + 66) // GPIOX_0
+#define N2_GPIOX_PIN_MID		(N2_GPIO_PIN_BASE + 81) // GPIOX_15
+#define N2_GPIOX_PIN_END		(N2_GPIO_PIN_BASE + 85) // GPIOX_19
+
+#define N2_GPIOX_FSEL_REG_OFFSET	0x116
+#define N2_GPIOX_OUTP_REG_OFFSET	0x117
+#define N2_GPIOX_INP_REG_OFFSET		0x118
+#define N2_GPIOX_PUPD_REG_OFFSET	0x13C
+#define N2_GPIOX_PUEN_REG_OFFSET	0x14A
+
+#define N2_GPIOA_FSEL_REG_OFFSET	0x120
+#define N2_GPIOA_OUTP_REG_OFFSET	0x121
+#define N2_GPIOA_INP_REG_OFFSET		0x122
+#define N2_GPIOA_PUPD_REG_OFFSET	0x13F
+#define N2_GPIOA_PUEN_REG_OFFSET	0x14D
 
 #ifdef DEFINE_ODROID_VARS
 
@@ -437,6 +463,58 @@ static int pinToGpioOdroidXU [64] = {
     -1, -1, -1, -1, -1, -1, -1      // 57...63
 } ;
 
+static const int pinToGpioOdroidN2[64] = {
+	// wiringPi number to native gpio number
+	479, 492,	//  0 |  1 : GPIOX.3, GPIOX.16
+	480, 483,	//  2 |  3 : GPIOX.4, GPIOX.7
+	476, 477,	//  4 |  5 : GPIOX.0, GPIOX.1
+	478, 473,	//  6 |  7 : GPIOX.2, GPIOA.13
+	493, 494,	//  8 |  9 : GPIOX.17(I2C-2_SDA), GPIOX.18(I2C-2_SCL)
+	486, 464,	// 10 | 11 : GPIOX.10, GPIOA.4
+	484, 485,	// 12 | 13 : GPIOX.8, GPIOX.9
+	487, 488,	// 14 | 15 : GPIOX.11, GPIOX.12
+	489,  -1,	// 16 | 17 : GPIOX.13,
+	-1,  -1,	// 18 | 19 :
+	-1,  490,	// 20 | 21 : , GPIOX.14
+	491, 481,	// 22 | 23 : GPIOX.15, GPIOX.5
+	482, -1,	// 24 | 25 : GPIOX.6, ADC.AIN3
+	472, 495,	// 26 | 27 : GPIOA.12, GPIOX.19
+	-1,  -1,	// 28 | 29 : REF1.8V OUT, ADC.AIN2
+	474, 475,	// 30 | 31 : GPIOA.14(I2C-3_SDA), GPIOA.15(I2C-3_SCL)
+	// Padding:
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,	// 32...47
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,	// 48...63
+};
+
+static const int physToGpioOdroidN2[64] = {
+	// physical header pin number to native gpio number
+	 -1,		//  0
+	 -1,  -1,	//  1 |  2 : 3.3V, 5.0V
+	493,  -1,	//  3 |  4 : GPIOX.17(I2C-2_SDA), 5.0V
+	494,  -1,	//  5 |  6 : GPIOX.18(I2C-2_SCL), GND
+	473, 488,	//  7 |  8 : GPIOA.13, GPIOX.12(UART_TX_B)
+	 -1, 489,	//  9 | 10 : GND, GPIOX.13(UART_RX_B)
+	479, 492,	// 11 | 12 : GPIOX.3, GPIOX.16
+	480,  -1,	// 13 | 14 : GPIOX.4, GND
+	483, 476,	// 15 | 16 : GPIOX.7, GPIOX.0
+	 -1, 477,	// 17 | 18 : 3.3V, GPIOX.1
+	484,  -1,	// 19 | 20 : GPIOX.8(SPI_MOSI), GND
+	485, 478,	// 21 | 22 : GPIOX.9(SPI_MISO), GPIOX.2
+	487, 486,	// 23 | 24 : GPIOX.11(SPI_SCLK), GPIOX.10(SPI_CE0)
+	 -1, 464,	// 25 | 26 : GND, GPIOA.4(SPI_CE1)
+	474, 475,	// 27 | 28 : GPIOA.14(I2C-3_SDA), GPIOA.15(I2C-3_SCL)
+	490,  -1,	// 29 | 30 : GPIOX.14, GND
+	491, 472,	// 31 | 32 : GPIOX.15, GPIOA.12
+	481,  -1,	// 33 | 34 : GPIOX.5, GND
+	482, 495,	// 35 | 36 : GPIOX.6, GPIOX.19
+	 -1,  -1,	// 37 | 38 : ADC.AIN3, 1.8V REF OUT
+	 -1,  -1,	// 39 | 40 : GND, ADC.AIN2
+	// Not used
+	-1, -1, -1, -1, -1, -1, -1, -1,	// 41...48
+	-1, -1, -1, -1, -1, -1, -1, -1,	// 49...56
+	-1, -1, -1, -1, -1, -1, -1	// 57...63
+};
+
 /* end wiringPi.c code */
 
 
@@ -480,6 +558,18 @@ const int bcmToOGpioOdroidXU[64] = {	// BCM ModE
      -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1  // 56..63
 };
 
+const int bcmToOGpioOdroidN2[64] = {	// BCM ModE
+     -1,  -1, 493, 494, 473, 490, 491, 464, // 0..7
+    486, 485, 484, 487, 472, 481, 488, 489, // 8..15
+    495, 479, 492, 482,  -1,  -1, 483, 476, // 16..23
+    477, 478,  -1, 480,  -1,  -1,  -1,  -1, // 24..31
+// Padding:
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, // 32..39
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, // 40..47
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, // 48..55
+     -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1  // 56..63
+};
+
 const int bcmToOGpioRPi[64] = {	// BCM ModE
       0,   1,   2,   3,   4,   5,   6,   7, // 0..7
       8,   9,  10,  11,  12,  13,  14,  15, // 8..15
@@ -505,6 +595,7 @@ extern const int physToGpioOdroidXU[64];
 extern const int bcmToOGpioOdroidC[64];
 extern const int bcmToOGpioOdroidC2[64];
 extern const int bcmToOGpioOdroidXU[64];
+extern const int bcmToOGpioOdroidN2[64];
 extern const int bcmToOGpioRPi[64];
 extern const int (*bcm_to_odroidgpio)[64];
 
