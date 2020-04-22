@@ -150,6 +150,14 @@ static int  gpioToGPSETReg (int pin)
         if (pin >= N2_GPIOA_PIN_START && pin <= N2_GPIOA_PIN_END)
             return  N2_GPIOA_OUTP_REG_OFFSET;
     }
+    else if (piModel == PI_MODEL_ODROIDC4) {
+        if (pin >= C4_GPIOH_PIN_START && pin <= C4_GPIOH_PIN_END)
+            return  C4_GPIOH_OUTP_REG_OFFSET;
+        if (pin >= C4_GPIOA_PIN_START && pin <= C4_GPIOA_PIN_END)
+            return  C4_GPIOA_OUTP_REG_OFFSET;
+        if (pin >= C4_GPIOX_PIN_START && pin <= C4_GPIOX_PIN_END)
+            return  C4_GPIOX_OUTP_REG_OFFSET;
+    }
     else    {
         if(pin >= GPIOX_PIN_START && pin <= GPIOX_PIN_END)
 		return  GPIOX_OUTP_REG_OFFSET;
@@ -195,6 +203,14 @@ static int  gpioToGPLEVReg (int pin)
         if (pin >= N2_GPIOA_PIN_START && pin <= N2_GPIOA_PIN_END)
             return  N2_GPIOA_INP_REG_OFFSET;
     }
+    else if (piModel == PI_MODEL_ODROIDC4) {
+        if (pin >= C4_GPIOH_PIN_START && pin <= C4_GPIOH_PIN_END)
+            return  C4_GPIOH_INP_REG_OFFSET;
+        if (pin >= C4_GPIOA_PIN_START && pin <= C4_GPIOA_PIN_END)
+            return  C4_GPIOA_INP_REG_OFFSET;
+        if (pin >= C4_GPIOX_PIN_START && pin <= C4_GPIOX_PIN_END)
+            return  C4_GPIOX_INP_REG_OFFSET;
+    }
     else    {
         if(pin >= GPIOX_PIN_START && pin <= GPIOX_PIN_END)
 		return  GPIOX_INP_REG_OFFSET;
@@ -221,6 +237,14 @@ static int  gpioToPUENReg (int pin)
             return  N2_GPIOX_PUEN_REG_OFFSET;
         if (pin >= N2_GPIOA_PIN_START && pin <= N2_GPIOA_PIN_END)
             return  N2_GPIOA_PUEN_REG_OFFSET;
+    }
+    else if (piModel == PI_MODEL_ODROIDC4) {
+        if (pin >= C4_GPIOH_PIN_START && pin <= C4_GPIOH_PIN_END)
+            return  C4_GPIOH_PUEN_REG_OFFSET;
+        if (pin >= C4_GPIOA_PIN_START && pin <= C4_GPIOA_PIN_END)
+            return  C4_GPIOA_PUEN_REG_OFFSET;
+        if (pin >= C4_GPIOX_PIN_START && pin <= C4_GPIOX_PIN_END)
+            return  C4_GPIOX_PUEN_REG_OFFSET;
     }
 	else	{
 		if(pin >= GPIOX_PIN_START && pin <= GPIOX_PIN_END)
@@ -267,6 +291,14 @@ static int  gpioToPUPDReg (int pin)
         if (pin >= N2_GPIOA_PIN_START && pin <= N2_GPIOA_PIN_END)
             return  N2_GPIOA_PUPD_REG_OFFSET;
     }
+    else if (piModel == PI_MODEL_ODROIDC4) {
+        if (pin >= C4_GPIOH_PIN_START && pin <= C4_GPIOH_PIN_END)
+            return  C4_GPIOH_PUPD_REG_OFFSET;
+        if (pin >= C4_GPIOA_PIN_START && pin <= C4_GPIOA_PIN_END)
+            return  C4_GPIOA_PUPD_REG_OFFSET;
+        if (pin >= C4_GPIOX_PIN_START && pin <= C4_GPIOX_PIN_END)
+            return	C4_GPIOX_PUPD_REG_OFFSET;
+    }
     else    {
         if(pin >= GPIOX_PIN_START && pin <= GPIOX_PIN_END)
 		return  GPIOX_PUPD_REG_OFFSET;
@@ -312,6 +344,14 @@ static int  gpioToShiftReg (int pin)
         if (pin >= N2_GPIOA_PIN_START && pin <= N2_GPIOA_PIN_END)
             return  pin - N2_GPIOA_PIN_START;
     }
+    else if (piModel == PI_MODEL_ODROIDC4) {
+        if (pin >= C4_GPIOH_PIN_START && pin <= C4_GPIOH_PIN_END)
+            return  pin - C4_GPIOH_PIN_START;
+        if (pin >= C4_GPIOA_PIN_START && pin <= C4_GPIOA_PIN_END)
+            return  pin - C4_GPIOA_PIN_START;
+        if (pin >= C4_GPIOX_PIN_START && pin <= C4_GPIOX_PIN_END)
+            return  pin - C4_GPIOX_PIN_START;
+    }
     else    {
         if(pin >= GPIOX_PIN_START && pin <= GPIOX_PIN_END)
 		return  pin - GPIOX_PIN_START;
@@ -356,6 +396,14 @@ static int  gpioToGPFSELReg (int pin)
             return  N2_GPIOX_FSEL_REG_OFFSET;
         if(pin >= N2_GPIOA_PIN_START && pin <= N2_GPIOA_PIN_END)
             return  N2_GPIOA_FSEL_REG_OFFSET;
+    }
+    else if (piModel == PI_MODEL_ODROIDC4) {
+        if (pin >= C4_GPIOH_PIN_START && pin <= C4_GPIOH_PIN_END)
+            return  C4_GPIOH_FSEL_REG_OFFSET;
+        if(pin >= C4_GPIOA_PIN_START && pin <= C4_GPIOA_PIN_END)
+            return  C4_GPIOA_FSEL_REG_OFFSET;
+        if(pin >= C4_GPIOX_PIN_START && pin <= C4_GPIOX_PIN_END)
+            return  C4_GPIOX_FSEL_REG_OFFSET;
     }
     else    {
         if(pin >= GPIOX_PIN_START && pin <= GPIOX_PIN_END)
@@ -444,6 +492,18 @@ int wiringPiSetupOdroid (void)
         adcFds[0] = open("/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage2_raw", O_RDONLY);
         adcFds[1] = open("/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage3_raw", O_RDONLY);
     }
+    else if (piModel == PI_MODEL_ODROIDC4) {
+        // GPIO:
+        gpio = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, C4_GPIO_BASE);
+        if ((int32_t)gpio == -1)
+            return wiringPiFailure(WPI_ALMOST, "wpSetupOdroid: mmap (GPIO) failed: %s\n", strerror(errno));
+        gpio1 = NULL;
+
+        // ADC
+        // ADC sysfs open (/sys/class/saradc/saradc_ch0, ch1)
+        adcFds[0] = open("/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage2_raw", O_RDONLY);
+        adcFds[1] = open("/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage0_raw", O_RDONLY);
+    }
     else if (piModel == PI_MODEL_ODROIDXU_34)
     {
         // Check the kernel version and then set the ADC files
@@ -509,7 +569,8 @@ void pinModeOdroid (int pin, int mode)
     {
         if (piModel == PI_MODEL_ODROIDC ||
             piModel == PI_MODEL_ODROIDC2 ||
-            piModel == PI_MODEL_ODROIDN2)
+            piModel == PI_MODEL_ODROIDN2 ||
+            piModel == PI_MODEL_ODROIDC4)
             *(gpio + gpioToGPFSELReg(pin)) = (*(gpio + gpioToGPFSELReg(pin)) | (1 << gpioToShiftReg(pin)));
         else if (piModel == PI_MODEL_ODROIDXU_34)
         {
@@ -526,7 +587,8 @@ void pinModeOdroid (int pin, int mode)
     {
         if (piModel == PI_MODEL_ODROIDC ||
             piModel == PI_MODEL_ODROIDC2 ||
-            piModel == PI_MODEL_ODROIDN2)
+            piModel == PI_MODEL_ODROIDN2 ||
+            piModel == PI_MODEL_ODROIDC4)
             *(gpio + gpioToGPFSELReg(pin)) = (*(gpio + gpioToGPFSELReg(pin)) & ~(1 << gpioToShiftReg(pin)));
         else if (piModel == PI_MODEL_ODROIDXU_34)
         {
@@ -573,7 +635,8 @@ void pullUpDnControlOdroid (int pin, int pud)
 {
     if (piModel == PI_MODEL_ODROIDC ||
         piModel == PI_MODEL_ODROIDC2 ||
-        piModel == PI_MODEL_ODROIDN2)
+        piModel == PI_MODEL_ODROIDN2 ||
+        piModel == PI_MODEL_ODROIDC4)
     {
 
         if (pud)
@@ -638,7 +701,8 @@ int digitalReadOdroid (int pin)
 
     if (piModel == PI_MODEL_ODROIDC ||
         piModel == PI_MODEL_ODROIDC2 ||
-        piModel == PI_MODEL_ODROIDN2)
+        piModel == PI_MODEL_ODROIDN2 ||
+        piModel == PI_MODEL_ODROIDC4)
     {
         if ((*(gpio + gpioToGPLEVReg(pin)) & (1 << gpioToShiftReg(pin))) != 0)
             return HIGH;
@@ -669,7 +733,8 @@ void digitalWriteOdroid (int pin, int value)
 
     if (piModel == PI_MODEL_ODROIDC ||
         piModel == PI_MODEL_ODROIDC2 ||
-        piModel == PI_MODEL_ODROIDN2)
+        piModel == PI_MODEL_ODROIDN2 ||
+        piModel == PI_MODEL_ODROIDC4)
     {
         if (value == LOW)
             *(gpio + gpioToGPSETReg(pin)) &= ~(1 << gpioToShiftReg(pin));
@@ -699,7 +764,7 @@ void digitalWriteOdroid (int pin, int value)
 
 /*
  * analogRead:
- *	Read the analog value of a given Pin. 
+ *	Read the analog value of a given Pin.
  *	There is no on-board Pi analog hardware,
  *	so this needs to go to a new node.
  *********************************************************************************
@@ -715,7 +780,8 @@ int analogReadOdroid (int pin)
     if (piModel == PI_MODEL_ODROIDC ||
         piModel == PI_MODEL_ODROIDC2 ||
         piModel == PI_MODEL_ODROIDXU_34 ||
-        piModel == PI_MODEL_ODROIDN2)
+        piModel == PI_MODEL_ODROIDN2 ||
+        piModel == PI_MODEL_ODROIDC4)
     {
         if (pin < 2)
         {
@@ -734,7 +800,7 @@ int analogReadOdroid (int pin)
 
 /*
  * analogWrite:
- *	Write the analog value to the given Pin. 
+ *	Write the analog value to the given Pin.
  *	There is no on-board Pi analog hardware,
  *	so this needs to go to a new node.
  *********************************************************************************
@@ -760,7 +826,8 @@ int pinGetModeOdroid (int pin)
 
     if (piModel == PI_MODEL_ODROIDC ||
         piModel == PI_MODEL_ODROIDC2 ||
-        piModel == PI_MODEL_ODROIDN2)
+        piModel == PI_MODEL_ODROIDN2 ||
+        piModel == PI_MODEL_ODROIDC4)
     {
         regval = (*(gpio + gpioToGPFSELReg(pin)));
         rwbit = regval & (1 << gpioToShiftReg(pin));
@@ -774,7 +841,7 @@ int pinGetModeOdroid (int pin)
         else
             regval = (*(gpio1 + gpioToGPFSELReg(pin)));
         rwbit = regval & (0x1 << shift);
-        retval=((rwbit!=0) ? 1 : 0); 
+        retval=((rwbit!=0) ? 1 : 0);
     }
     else
         wiringPiFailure(WPI_FATAL, "pinGetModeOdroid: This code should only be called for Odroid\n");
@@ -822,6 +889,15 @@ void setInfoOdroid(char *hardware, void *vinfo)
         info->manufacturer = "Hardkernel";
         info->processor = "AMLS922X";
     }
+    else if (strcmp(hardware, "ODROID-C4") == 0)
+    {
+        piModel = PI_MODEL_ODROIDC4;
+        info->type = "ODROID-C4";
+        info->p1_revision = 3;
+        info->ram = "4096M";
+        info->manufacturer = "Hardkernel";
+        info->processor = "AMLS905X3";
+    }
     return;
 }
 
@@ -846,5 +922,10 @@ void setMappingPtrsOdroid(void)
     {
         pin_to_gpio = (const int(*)[41]) & physToGpioOdroidN2;
         bcm_to_odroidgpio = &bcmToOGpioOdroidN2;
+    }
+    else if (piModel == PI_MODEL_ODROIDC4)
+    {
+        pin_to_gpio = (const int(*)[41]) & physToGpioOdroidC4;
+        bcm_to_odroidgpio = &bcmToOGpioOdroidC4;
     }
 }
