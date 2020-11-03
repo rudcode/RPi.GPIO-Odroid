@@ -14,4 +14,4 @@ Although hardware PWM is not available yet, software PWM is available to use on 
 For examples and documentation, visit http://sourceforge.net/p/raspberry-gpio-python/wiki/Home/
 
 ODROID support added by Jerry Fath
-
+ODROID support maintained by Deokgyu Yang <secugyu@gmail.com>
