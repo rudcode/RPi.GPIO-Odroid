@@ -25,6 +25,8 @@ SOFTWARE.
 #include "py_pwm.h"
 #include "common.h"
 #include "c_gpio.h"
+#include "odroid.h"
+#include "odroid_hw_pwm.h"
 
 typedef struct
 {
@@ -46,6 +48,19 @@ static int PWM_init(PWMObject *self, PyObject *args, PyObject *kwds)
     // convert channel to gpio
     if (get_gpio_number(channel, &(self->gpio)))
         return -1;
+
+    if (!hw_pwm_init() && hw_pwm_is_pin_supported(self->gpio)) {
+        int ret;
+
+        if ((ret = hw_pwm_start(self->gpio)) < 0)
+            return ret;
+
+        self->freq = frequency;
+        if ((ret = hw_pwm_set_frequency(self->gpio, self->freq)) < 0)
+            return ret;
+
+        return 0;
+    }
 
     // does soft pwm already exist on this channel?
     if (pwm_exists(self->gpio))
@@ -70,6 +85,7 @@ static int PWM_init(PWMObject *self, PyObject *args, PyObject *kwds)
     self->freq = frequency;
 
     //!!!Original odroid port passed rpi BCM number. Now passing native GPIO number to pwm_set_frequency
+    //!!! Hardware supported PWM pins will not reach to here.
     pwm_set_frequency(self->gpio, self->freq);
     return 0;
 }

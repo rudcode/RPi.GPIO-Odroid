@@ -25,6 +25,8 @@ SOFTWARE.
 #include <time.h>
 #include "c_gpio.h"
 #include "soft_pwm.h"
+#include "odroid.h"
+#include "odroid_hw_pwm.h"
 pthread_t threads;
 
 struct pwm
@@ -161,6 +163,13 @@ struct pwm *find_pwm(unsigned int gpio)
 
 void pwm_set_duty_cycle(unsigned int gpio, float dutycycle)
 {
+    if (hw_pwm_is_board_supported() && hw_pwm_is_pin_supported(gpio)) {
+        if (hw_pwm_set_duty_cycle(gpio, dutycycle) < 0)
+            printf("Odroid HW-based PWM error: hw_%s\n", __func__);
+
+        return;
+    }
+
     struct pwm *p;
 
     if (dutycycle < 0.0 || dutycycle > 100.0)
@@ -178,6 +187,13 @@ void pwm_set_duty_cycle(unsigned int gpio, float dutycycle)
 
 void pwm_set_frequency(unsigned int gpio, float freq)
 {
+    if (hw_pwm_is_board_supported() && hw_pwm_is_pin_supported(gpio)) {
+        if (hw_pwm_set_frequency(gpio, freq) < 0)
+            printf("Odroid HW-based PWM error: hw_%s\n", __func__);
+
+        return;
+    }
+
     struct pwm *p;
 
     if (freq <= 0.0) // to avoid divide by zero
@@ -196,6 +212,14 @@ void pwm_set_frequency(unsigned int gpio, float freq)
 
 void pwm_start(unsigned int gpio)
 {
+    printf("%s: %d\n", __func__, gpio);
+    if (hw_pwm_is_board_supported() && hw_pwm_is_pin_supported(gpio)) {
+        if (hw_pwm_start(gpio) < 0)
+            printf("Odroid HW-based PWM error: hw_%s\n", __func__);
+
+        return;
+    }
+
     struct pwm *p;
 
     if (((p = find_pwm(gpio)) == NULL) || p->running)
@@ -213,12 +237,28 @@ void pwm_start(unsigned int gpio)
 
 void pwm_stop(unsigned int gpio)
 {
+    if (hw_pwm_is_board_supported() && hw_pwm_is_pin_supported(gpio)) {
+        if (hw_pwm_stop(gpio) < 0)
+            printf("Odroid HW-based PWM error: hw_%s\n", __func__);
+
+        return;
+    }
+
     remove_pwm(gpio);
 }
 
 // returns 1 if there is a PWM for this gpio, 0 otherwise
 int pwm_exists(unsigned int gpio)
 {
+    if (hw_pwm_is_board_supported() && hw_pwm_is_pin_supported(gpio)) {
+        int ret;
+
+        if ((ret = hw_pwm_exists(gpio)) < 0)
+            printf("Odroid HW-based PWM error: hw_%s\n", __func__);
+
+        return ret;
+    }
+
     struct pwm *p = pwm_list;
 
     while (p != NULL)

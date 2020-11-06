@@ -43,4 +43,4 @@ setup(name             = 'RPi.GPIO',
       url              = 'https://github.com/awesometic/RPi.GPIO-Odroid',
       classifiers      = classifiers,
       packages         = ['RPi','RPi.GPIO'],
-      ext_modules      = [Extension('RPi._GPIO', ['source/py_gpio.c', 'source/c_gpio.c', 'source/cpuinfo.c', 'source/event_gpio.c', 'source/soft_pwm.c', 'source/py_pwm.c', 'source/common.c', 'source/constants.c', 'source/odroid.c'])])
+      ext_modules      = [Extension('RPi._GPIO', ['source/py_gpio.c', 'source/c_gpio.c', 'source/cpuinfo.c', 'source/event_gpio.c', 'source/soft_pwm.c', 'source/py_pwm.c', 'source/common.c', 'source/constants.c', 'source/odroid.c', 'source/odroid_hw_pwm.c'])])
