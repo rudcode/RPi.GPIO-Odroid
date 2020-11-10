@@ -60,7 +60,7 @@ int get_rpi_info(rpi_info *info)
              strcmp(hardware, "BCM2836") == 0 ||
              strcmp(hardware, "BCM2837") == 0 ) {
             found = 1;
-              odroid_found = 0;
+            odroid_found = 0;
          }
          else {  //Check for Odroid
             if (strstr(hardware, "Hardkernel"))

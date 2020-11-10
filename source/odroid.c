@@ -889,6 +889,15 @@ void setInfoOdroid(char *hardware, void *vinfo)
         info->manufacturer = "Hardkernel";
         info->processor = "AMLS922X";
     }
+    else if (strcmp(hardware, "ODROID-N2Plus") == 0)
+    {
+        piModel = PI_MODEL_ODROIDN2;
+        info->type = "ODROID-N2Plus";
+        info->p1_revision = 3;
+        info->ram = "2048M/4096M";
+        info->manufacturer = "Hardkernel";
+        info->processor = "AMLS922X";
+    }
     else if (strcmp(hardware, "ODROID-C4") == 0)
     {
         piModel = PI_MODEL_ODROIDC4;
