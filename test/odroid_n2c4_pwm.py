@@ -14,12 +14,16 @@ if __name__ == '__main__':
 
     # Exclude BCM 0, 1 since Odroid-N2Plus uses those pins for the RTC modules
     # that is an on-board component
-    # Also exclude BCM 20, 21, 26 that are used for the other functions on
-    # Odroid
+    # Also exclude BCM 20, 21, 26 that are used for the other functions
+    # on Odroid
     bcm_pin_list = set(list(range(0,27))) - set([0, 1, 20, 21, 26])
     pwm_list = list()
 
-    # For debugging
+    # These BCM pin numbers are corresponded to physical pin number
+    # 33, 12, 35, 15
+    # Before using these, MAKE SURE THAT YOU HAVE ENABLED PWM DTBOS.
+    # - Odroid-N2: pwm_cd, pwm_ef
+    # - Odroid-C4: pwm_ab, pwm_ef
     n2_hw_pwm_bcm_pins = [ 13, 18, 19, 22 ]
     bcm_pin_list = n2_hw_pwm_bcm_pins
 
