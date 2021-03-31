@@ -24,8 +24,9 @@ if __name__ == '__main__':
     # Before using these, MAKE SURE THAT YOU HAVE ENABLED PWM DTBOS.
     # - Odroid-N2: pwm_cd, pwm_ef
     # - Odroid-C4: pwm_ab, pwm_ef
-    n2_hw_pwm_bcm_pins = [ 13, 18, 19, 22 ]
-    bcm_pin_list = n2_hw_pwm_bcm_pins
+    hw_pwm_bcm_pins = [ 13, 18, 19, 22 ]
+
+    bcm_pin_list = hw_pwm_bcm_pins
 
     for pin in bcm_pin_list:
         GPIO.setup(pin, GPIO.OUT)
@@ -38,19 +39,19 @@ if __name__ == '__main__':
 
     try:
         while True:
-            for pwm in pwm_list:
+            for idx, pwm in enumerate(pwm_list):
                 pwm.ChangeDutyCycle(duty)
 
             if duty_switch_flag:
-                duty = duty + 10
+                duty = duty + 5
             else:
-                duty = duty - 10
+                duty = duty - 5
 
-            if duty == 50 or duty == 100:
+            if duty == 30 or duty == 100:
                 duty_switch_flag = not duty_switch_flag
 
             print(f'duty: {duty}')
-            time.sleep(0.2)
+            time.sleep(0.05)
 
     except KeyboardInterrupt:
         for pwm in pwm_list:
