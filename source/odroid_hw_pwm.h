@@ -32,6 +32,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define PWM_PIN_ENABLE 1
 #define PWM_PIN_DISABLE 0
 
+/*****************************************************************************/
+/*
+ * These tables are containing subtracting GPIO base pin number from given
+ * GPIO pin number. This becuase this RPi.GPIO-Odroid is supporting various
+ * Odroid boards that each have the different GPIO pin number. So that the
+ * given pin number will be a real number that the SoC regards.
+ *
+ * e.g, In C4, if a user codes using BCM pin #13 then this number will be
+ * converted to #482 that is the corresponding number C4 uses. And as the base
+ * number for 40 pin header on Odroid-C4 is 460, (482 - 460) is the index for
+ * the following tables.
+ */
+/*****************************************************************************/
 /*
  * Odroid-N2
  NET  |   GPIO   | 40 PIN | BCM | GPIO - BASE |  PWMCHIP  | PWM PIN
@@ -77,8 +90,8 @@ static int gpio_subtracted_base_to_pwm_pin_N2[129] = {
 /*
  * Odroid-C4
  NET  |   GPIO   | 40 PIN | BCM | GPIO - BASE |  PWMCHIP  | PWM PIN
-PWM_A | GPIOX. 6 |   33   | 13  |     22      | PWMCHIP.0 | 1
-PWM_B | GPIOX.19 |   35   | 19  |     35      | PWMCHIP.0 | 0
+PWM_A | GPIOX. 6 |   33   | 13  |     22      | PWMCHIP.0 | 0
+PWM_B | GPIOX.19 |   35   | 19  |     35      | PWMCHIP.0 | 1
 PWM_E | GPIOX.16 |   12   | 18  |     32      | PWMCHIP.4 | 0
 PWM_F | GPIOX. 7 |   15   | 22  |     23      | PWMCHIP.4 | 1
 */
@@ -103,8 +116,8 @@ static int gpio_subtracted_base_to_pwm_pin_C4[129] = {
     -1,     // Index 0, that will not be used
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20
-    -1,  1,  1, -1, -1, -1, -1, -1, -1, -1, // 30
-    -1,  0, -1, -1,  0, -1, -1, -1, -1, -1, // 40
+    -1,  0,  1, -1, -1, -1, -1, -1, -1, -1, // 30
+    -1,  0, -1, -1,  1, -1, -1, -1, -1, -1, // 40
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 60
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 70
