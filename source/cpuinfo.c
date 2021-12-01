@@ -51,6 +51,31 @@ int get_rpi_info(rpi_info *info)
       sprintf(revision, "%x", ntohl(n));
       found = 1;
    }
+   else if ((fp = fopen("/proc/device-tree/model", "r"))) {
+      fgets(buffer, sizeof(buffer), fp);
+      strcpy(hardware, buffer);
+      if (strcmp(hardware, "BCM2708") == 0 ||
+          strcmp(hardware, "BCM2709") == 0 ||
+          strcmp(hardware, "BCM2835") == 0 ||
+          strcmp(hardware, "BCM2836") == 0 ||
+          strcmp(hardware, "BCM2837") == 0 ) {
+         found = 1;
+         odroid_found = 0;
+      }
+      else {  //Check for Odroid
+         if (strstr(hardware, "Hardkernel"))
+             sscanf(buffer, "Hardkernel %s", hardware);
+         if (strstr(hardware, "ODROID")) {
+            odroid_found = found = 1;
+            setInfoOdroid(hardware, (void *)info);
+         }
+      }
+      FILE* fp2 = fopen("/proc/cpuinfo", "r");
+      while(!feof(fp2) && fgets(buffer, sizeof(buffer), fp2)) {
+         sscanf(buffer, "Revision	: %s", revision);
+      }
+      fclose(fp2);
+   }
    else if ((fp = fopen("/proc/cpuinfo", "r"))) {
       while(!feof(fp) && fgets(buffer, sizeof(buffer), fp)) {
          sscanf(buffer, "Hardware	: %s", hardware);
