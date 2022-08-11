@@ -19,6 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#ifndef COMMON_H
+#define COMMON_H
 
 #include "cpuinfo.h"
 
@@ -43,3 +45,5 @@ int setup_error;
 int module_setup;
 int check_gpio_priv(void);
 int get_gpio_number(int channel, unsigned int *gpio);
+
+#endif /* COMMON_H */

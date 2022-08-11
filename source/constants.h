@@ -20,6 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifndef CONSTANT_H
+#define CONSTANT_H
+
 #define PY_PUD_CONST_OFFSET 20
 #define PY_EVENT_CONST_OFFSET 30
 
@@ -42,3 +45,5 @@ PyObject *falling_edge;
 PyObject *both_edge;
 
 void define_constants(PyObject *module);
+
+#endif /* CONSTANT_H */

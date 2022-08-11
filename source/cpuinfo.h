@@ -22,6 +22,7 @@ SOFTWARE.
 
 #ifndef CPUINFO_H
 #define CPUINFO_H
+
 typedef struct
 {
    int p1_revision;
@@ -31,6 +32,7 @@ typedef struct
    char *type;
    char revision[1024];
 } rpi_info;
-#endif /* CPUINFO_H */
 
 int get_rpi_info(rpi_info *info);
+
+#endif /* CPUINFO_H */

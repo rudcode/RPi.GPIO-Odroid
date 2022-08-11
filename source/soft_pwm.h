@@ -21,9 +21,13 @@ SOFTWARE.
 */
 
 /* Software PWM using threads */
+#ifndef SOFT_PWM_H
+#define SOFT_PWM_H
  
 void pwm_set_duty_cycle(unsigned int gpio, float dutycycle);
 void pwm_set_frequency(unsigned int gpio, float freq);
 void pwm_start(unsigned int gpio);
 void pwm_stop(unsigned int gpio);
 int pwm_exists(unsigned int gpio);
+
+#endif /* SOFT_PWM_H */

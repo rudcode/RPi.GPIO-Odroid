@@ -19,6 +19,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#ifndef EVENT_GPIO_H
+#define EVENT_GPIO_H
 
 #define NO_EDGE      0
 #define RISING_EDGE  1
@@ -34,3 +36,5 @@ int event_initialise(void);
 void event_cleanup(int gpio);
 void event_cleanup_all(void);
 int blocking_wait_for_edge(unsigned int gpio, unsigned int edge, int bouncetime, int timeout);
+
+#endif  /* EVENT_GPIO_H */
