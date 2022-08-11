@@ -22,7 +22,7 @@ SOFTWARE.
 #ifndef PY_PWM_H
 #define PY_PWM_H
 
-PyTypeObject PWMType;
+extern PyTypeObject PWMType;
 PyTypeObject *PWM_init_PWMType(void);
 
 #endif /* PY_PWM_H */

@@ -60,7 +60,6 @@ struct callback
 };
 struct callback *callbacks = NULL;
 
-pthread_t threads;
 int event_occurred[MAXGPIOCOUNT+1] = { 0 };  //odroid patch
 int thread_running = 0;
 int epfd_thread = -1;

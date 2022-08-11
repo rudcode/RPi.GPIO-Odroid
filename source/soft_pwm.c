@@ -27,7 +27,6 @@ SOFTWARE.
 #include "soft_pwm.h"
 #include "odroid.h"
 #include "odroid_hw_pwm.h"
-pthread_t threads;
 
 struct pwm
 {
@@ -221,6 +220,7 @@ void pwm_start(unsigned int gpio)
     }
 
     struct pwm *p;
+    pthread_t threads;
 
     if (((p = find_pwm(gpio)) == NULL) || p->running)
         return;
